@@ -48,22 +48,35 @@ function handleSubmit(event) {
   const emailInput = form.querySelector('input[type="email"]');
   const phoneInput = form.querySelector('input[type="number"]');
 
-  // Email validation
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Clear previous error states
+  clearErrors();
+
+  // Validation checks
+  let hasErrors = false;
+
+  // Email validation - more comprehensive pattern
+  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailPattern.test(emailInput.value)) {
-    alert("Please enter a valid email address.");
-    return;
+    showError(
+      emailInput,
+      "Please enter a valid email address (e.g., name@example.com)"
+    );
+    hasErrors = true;
   }
 
-  // Phone number validation
-  const phonePattern = /^\d{10,15}$/; // Adjust the range as needed
-  if (!phonePattern.test(phoneInput.value)) {
-    alert("Please enter a valid phone number.");
-    return;
+  // Phone number validation - more flexible pattern
+  const phonePattern = /^[\d\s()+.-]{10,15}$/;
+  if (!phonePattern.test(phoneInput.value.replace(/\s+/g, ""))) {
+    showError(phoneInput, "Please enter a valid phone number (10-15 digits)");
+    hasErrors = true;
   }
+
+  if (hasErrors) return;
 
   // Show success message
   successMessage.style.display = "block";
+  successMessage.textContent = "Booking submitted successfully!";
+  successMessage.className = "success-message";
 
   // Reset form
   form.reset();
@@ -72,4 +85,21 @@ function handleSubmit(event) {
   setTimeout(() => {
     successMessage.style.display = "none";
   }, 3000);
+}
+
+function showError(input, message) {
+  const errorDiv = document.createElement("div");
+  errorDiv.className = "error-message";
+  errorDiv.textContent = message;
+  input.classList.add("error");
+  input.parentNode.insertBefore(errorDiv, input.nextSibling);
+}
+
+function clearErrors() {
+  document
+    .querySelectorAll(".error-message")
+    .forEach((error) => error.remove());
+  document
+    .querySelectorAll(".error")
+    .forEach((input) => input.classList.remove("error"));
 }
