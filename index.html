@@ -278,17 +278,21 @@
 
         <h1 class="heading"> booking <span>reserve a table</span> </h1>
 
-        <form action="">
+        <form id="bookingForm" onsubmit="handleSubmit(event)">
 
-            <input type="text" placeholder="your name" class="box">
-            <input type="email" placeholder="your email" class="box">
-            <input type="number" placeholder="your number" class="box">
+            <input type="text" placeholder="your name" class="box" required>
+            <input type="email" placeholder="your email" class="box" required>
+            <input type="number" placeholder="your number" class="box" required>
 
-            <textarea name="" placeholder="your message" class="box" id="" cols="30" rows="10"></textarea>
+            <textarea name="" placeholder="your message" class="box" id="" cols="30" rows="10" required></textarea>
 
             <input type="submit" value="send message" class="btn">
 
         </form>
+
+        <div id="successMessage" class="success-message" style="display: none;">
+            Your reservation has been successfully submitted!
+        </div>
 
     </section>
 
